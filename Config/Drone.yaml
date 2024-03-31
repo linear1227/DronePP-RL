@@ -1,0 +1,44 @@
+behaviors:
+  DroneBrain:
+    trainer_type: ppo
+    hyperparameters:
+      batch_size: 512
+      buffer_size: 20480
+      learning_rate: 0.0005
+      beta: 0.005
+      epsilon: 0.2
+      lambd: 0.95
+      num_epoch: 3
+      learning_rate_schedule: linear
+    network_settings:
+      normalize: false
+      hidden_units: 512
+      num_layers: 2
+      vis_encode_type: simple
+    reward_signals:
+      extrinsic:
+        gamma: 0.999
+        strength: 1.0
+      gail:
+        gamma: 0.99
+        strength: 0.01
+        network_settings:
+          normalize: false
+          hidden_units: 128
+          num_layers: 2
+          vis_encode_type: simple
+        learning_rate: 0.0003
+        use_actions: false
+        use_vail: false
+        demo_path: C:\Users\snake\Desktop\RL-mlagents\DroneDynamic\Assets\Demo\HumanDynamic_10.demo
+    init_path: null
+    keep_checkpoints: 10
+    max_steps: 6000000
+    checkpoint_interval: 600000
+    time_horizon: 1000
+    summary_freq: 100000
+    behavioral_cloning:
+      demo_path: C:\Users\snake\Desktop\RL-mlagents\DroneDynamic\Assets\Demo\HumanDynamic_10.demo
+      steps: 50000
+      strength: 1.0
+      samples_per_update: 0

@@ -1,0 +1,83 @@
+behaviors:
+  FactoryDrone:
+    trainer_type: ppo
+    hyperparameters:
+      batch_size: 512
+      buffer_size: 20480
+      learning_rate: 0.0005
+      beta: 0.005
+      epsilon: 0.2
+      lambd: 0.95
+      num_epoch: 3
+      learning_rate_schedule: linear
+    network_settings:
+      normalize: false
+      hidden_units: 1024
+      num_layers: 2
+      vis_encode_type: simple
+    reward_signals:
+      extrinsic:
+        gamma: 0.999
+        strength: 1.0
+      curiosity:
+        strength: 0.02
+        gamma: 0.99
+        encoding_size: 256
+        learning_rate: 3.0e-4
+    init_path: null
+    keep_checkpoints: 10
+    max_steps: 20000000
+    checkpoint_interval: 500000
+    time_horizon: 1000
+    summary_freq: 100000
+
+environment_parameters:
+  checkpoint_radius:
+    curriculum:           
+      - name: Lesson0
+        completion_criteria:
+          measure: reward
+          behavior: FactoryDrone
+          signal_smoothing: true
+          min_lesson_length: 100
+          threshold: 0.0
+        value: 15.0
+      
+      - name: Lesson1
+        completion_criteria:
+          measure: reward
+          behavior: FactoryDrone
+          signal_smoothing: true
+          min_lesson_length: 100
+          threshold: 1.0
+        value: 10.0
+      
+      - name: Lesson2
+        completion_criteria:
+          measure: reward
+          behavior: FactoryDrone
+          signal_smoothing: true
+          min_lesson_length: 100
+          threshold: 3.0
+        value: 5.0
+
+      - name: Lesson3
+        completion_criteria:
+          measure: reward
+          behavior: FactoryDrone
+          signal_smoothing: true
+          min_lesson_length: 100
+          threshold: 5.0
+        value: 2.0
+
+      - name: Lesson4
+        completion_criteria:
+          measure: reward
+          behavior: FactoryDrone
+          signal_smoothing: true
+          min_lesson_length: 100
+          threshold: 8.0
+        value: 1.0
+      
+      - name: Lesson5
+        value: 0.0
